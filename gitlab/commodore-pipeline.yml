@@ -1,0 +1,64 @@
+---
+stages:
+  - lint
+  - build
+  - trigger
+
+variables:
+  PIPELINE_GENERATION_IMAGE_NAME: ghcr.io/projectsyn/commodore-compile-pipelines/gitlab
+  PIPELINE_GENERATION_IMAGE_TAG: latest
+  PIPELINE_GENERATION_IMAGE: ${PIPELINE_GENERATION_IMAGE_NAME}:${PIPELINE_GENERATION_IMAGE_TAG}
+
+yamllint:
+  stage: lint
+  image: ${PIPELINE_GENERATION_IMAGE}
+  variables:
+    YAMLLINT_DEFAULTS: |-
+      extends: relaxed
+      rules:
+        line-length: disable
+        new-line-at-end-of-file: disable
+        trailing-spaces:
+          level: warning
+        octal-values:
+          forbid-implicit-octal: true
+          forbid-explicit-octal: true
+          ignore: |
+            manifests/
+        truthy:
+          allowed-values: ['true', 'false', 'True', 'False', 'TRUE', 'FALSE']
+          check-keys: true
+          ignore: |
+            manifests/
+  script:
+    - step-yamllint
+
+commodore-lint:
+  stage: lint
+  image:
+    name: docker.io/projectsyn/commodore:latest
+    entrypoint: ["/usr/local/bin/entrypoint.sh"]
+  script:
+    - commodore inventory lint .
+
+create-pipelines:
+  stage: build
+  image:
+    name: ${PIPELINE_GENERATION_IMAGE}
+    pull_policy: always
+  script:
+    - step-render-pipeline
+  artifacts:
+    paths:
+      - generated-commodore-compile.yml
+    expire_in: "1 week"
+
+trigger-pipelines:
+  stage: trigger
+  needs:
+    - create-pipelines
+  trigger:
+    include:
+      - artifact: generated-commodore-compile.yml
+        job: create-pipelines
+    strategy: depend

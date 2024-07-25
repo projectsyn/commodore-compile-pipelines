@@ -1,0 +1,6 @@
+include:
+  - https://raw.githubusercontent.com/projectsyn/commodore-compile-pipelines/main/gitlab/commodore-pipeline.yml
+
+variables:
+  # Space separated list of clusters to compile in MRs and push to on the default branch.
+  CLUSTERS: ""
