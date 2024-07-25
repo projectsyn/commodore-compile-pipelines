@@ -1,5 +1,7 @@
 ---
 extends: default
+ignore:
+  - /gitlab/tests/golden/
 rules:
   line-length: disable
   trailing-spaces:
