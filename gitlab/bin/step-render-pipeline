@@ -1,0 +1,19 @@
+#!/bin/sh
+set -e -u -x
+
+cluster_catalog_urls=""
+for c in ${CLUSTERS}; do
+  r=$(curl -sH"Authorization: Bearer ${COMMODORE_API_TOKEN}" "${COMMODORE_API_URL}/clusters/${c}" | jq -r .gitRepo.url)
+  cluster_catalog_urls="${cluster_catalog_urls}${c}=${r} "
+done
+
+jsonnet \
+  --ext-str clusters="${CLUSTERS}" \
+  --ext-str memory_limits="${MEMORY_LIMITS:-}" \
+  --ext-str cpu_limits="${CPU_LIMITS:-}" \
+  --ext-str cpu_requests="${CPU_REQUESTS:-}" \
+  --ext-str cluster_catalog_urls="${cluster_catalog_urls}" \
+  --ext-str server_fqdn="${CI_SERVER_FQDN}" \
+  --ext-str server_ssh_host="${CI_SERVER_SHELL_SSH_HOST}" \
+  /opt/commodore-compile.jsonnet \
+  > generated-commodore-compile.yml
