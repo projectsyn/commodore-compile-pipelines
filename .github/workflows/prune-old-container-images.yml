@@ -1,0 +1,19 @@
+---
+name: Prune old container images
+
+"on":
+  schedule:
+    - cron: "17 8 * * 1-5"
+  workflow_dispatch: {}
+
+jobs:
+  prune:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/delete-package-versions@v5
+        with:
+          package-name: "${{ github.repository }}-gitlab"
+          package-type: container
+          # never delete release versions or latest
+          ignore-versions: "^(v.*|latest)$"
+          min-versions-to-keep: 3
