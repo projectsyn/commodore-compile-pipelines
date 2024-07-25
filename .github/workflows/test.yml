@@ -31,3 +31,27 @@ jobs:
           pattern: |
             *.sh
             step-*
+
+  test_gitlab_generator_script_discover_cases:
+    name: Discover golden test cases
+    runs-on: ubuntu-latest
+    outputs:
+      instances: ${{ steps.instances.outputs.instances }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Find test cases
+        id: instances
+        run: |
+          echo "instances=$(make -sC gitlab list_test_instances)" >> "$GITHUB_OUTPUT"
+
+  test_gitlab_generator_script:
+    needs: test_gitlab_generator_script_discover_cases
+    strategy:
+      matrix:
+        instance: ${{ fromJSON(needs.test_gitlab_generator_script_discover_cases.outputs.instances) }}
+    runs-on: ubuntu-latest
+    name: 'Golden test: ${{ matrix.instance }}'
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          make -C gitlab golden-diff -e instance=${{ matrix.instance }}

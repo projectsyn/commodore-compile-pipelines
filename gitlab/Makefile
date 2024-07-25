@@ -35,3 +35,8 @@ gen-golden-all: $(test_instances)
 .PHONY: $(test_instances)
 $(test_instances):
 	$(MAKE) $(recursive_target) -e instance=$(basename $(@F))
+
+.PHONY: list_test_instances
+list_test_instances: JSONNET_ENTRYPOINT=jsonnet
+list_test_instances:
+	$(JSONNET_DOCKER) --ext-str instances="$(basename $(notdir $(test_instances)))" -e 'std.split(std.extVar("instances"), " ")' | jq -c
