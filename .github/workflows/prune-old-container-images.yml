@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/delete-package-versions@v5
         with:
-          package-name: "${{ github.repository }}-gitlab"
+          package-name: "${{ github.event.repository.name }}/gitlab"
           package-type: container
           # never delete release versions or latest
           ignore-versions: "^(v.*|latest)$"
