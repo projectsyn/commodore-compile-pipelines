@@ -46,3 +46,15 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: 'ghcr.io/${{ env.IMAGE }}:${{ env.VERSION }}'
+
+      - name: Delete untagged container images
+        # We always delete all untagged container images after building an
+        # image. This way, there should never be stale untagged images laying
+        # around in the registry. In combination with the workflow that
+        # deletes PR tags after the PR is closed we should be able to keep the
+        # container image registry size in check.
+        uses: dataaxiom/ghcr-cleanup-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          package: ${{ github.event.repository.name }}/gitlab
+          validate: true
