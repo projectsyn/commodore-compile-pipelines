@@ -8,7 +8,7 @@ name: Delete closed PR container image tag
 
 jobs:
   cleanup-pr-tag:
-    uses: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Set image version for PR to branch name
         run: echo "VERSION=${GITHUB_HEAD_REF//\//-}" >> ${GITHUB_ENV}
