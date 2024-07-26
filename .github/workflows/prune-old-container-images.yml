@@ -10,10 +10,11 @@ jobs:
   prune:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/delete-package-versions@v5
+      - name: Delete all but latest 3 feature branch versions
+        uses: actions/delete-package-versions@v5
         with:
           package-name: "${{ github.event.repository.name }}/gitlab"
           package-type: container
           # never delete release versions or latest
           ignore-versions: "^(v.*|latest)$"
-          min-versions-to-keep: 3
+          min-versions-to-keep: 10
