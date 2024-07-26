@@ -1,0 +1,15 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    ":disableDependencyDashboard"
+  ],
+  "regexManagers": [{
+    "fileMatch": ["^gitlab/commodore-compile\\.jsonnet$"],
+    "matchStrings": [
+      "commodore_version = '(?<currentValue>.*?)';"
+    ],
+    "depNameTemplate": "projectsyn/commodore",
+    "datasourceTemplate": "docker"
+  }]
+}

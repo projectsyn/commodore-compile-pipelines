@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e -u -x
+
+if [ "$(find . -name '.yamllint' -or -name '.yamllint.y*ml' | wc -l)" -ge "1" ]; then
+  # yamllint will autoload this file
+  exec yamllint .
+else
+  exec yamllint -d "$YAMLLINT_DEFAULTS" .
+fi
