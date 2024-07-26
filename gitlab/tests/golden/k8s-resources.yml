@@ -1,0 +1,179 @@
+{
+   "c-cluster-id-0099_compile": {
+      "artifacts": {
+         "expire_in": "1 week",
+         "paths": [
+            "diff.txt"
+         ]
+      },
+      "before_script": [
+         "install --directory --mode=0700 ~/.ssh",
+         "echo \"$SSH_KNOWN_HOSTS\" >> ~/.ssh/known_hosts",
+         "echo \"$SSH_CONFIG\" >> ~/.ssh/config"
+      ],
+      "image": {
+         "name": "docker.io/projectsyn/commodore:v1.22.1"
+      },
+      "rules": [
+         {
+            "if": "$CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH"
+         }
+      ],
+      "script": [
+         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}",
+         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_0099}@git.vshn.net:80/cluster-catalogs/c-cluster-id-0099.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}/cluster-catalogs/c-cluster-id-0099.git",
+         "/usr/local/bin/entrypoint.sh commodore catalog compile --tenant-repo-revision-override $CI_COMMIT_SHA c-cluster-id-0099",
+         "(cd catalog/ && git --no-pager diff --staged --output ../diff.txt)"
+      ],
+      "stage": "build",
+      "variables": {
+         "KUBERNETES_CPU_LIMIT": "2500m",
+         "KUBERNETES_CPU_REQUEST": "800m",
+         "KUBERNETES_MEMORY_LIMIT": "2Gi"
+      }
+   },
+   "c-cluster-id-0099_deploy": {
+      "before_script": [
+         "install --directory --mode=0700 ~/.ssh",
+         "echo \"$SSH_KNOWN_HOSTS\" >> ~/.ssh/known_hosts",
+         "echo \"$SSH_CONFIG\" >> ~/.ssh/config"
+      ],
+      "image": {
+         "name": "docker.io/projectsyn/commodore:v1.22.1"
+      },
+      "rules": [
+         {
+            "if": "$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH"
+         }
+      ],
+      "script": [
+         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}",
+         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_0099}@git.vshn.net:80/cluster-catalogs/c-cluster-id-0099.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}/cluster-catalogs/c-cluster-id-0099.git",
+         "/usr/local/bin/entrypoint.sh commodore catalog compile --push c-cluster-id-0099"
+      ],
+      "stage": "deploy",
+      "variables": {
+         "KUBERNETES_CPU_LIMIT": "2500m",
+         "KUBERNETES_CPU_REQUEST": "800m",
+         "KUBERNETES_MEMORY_LIMIT": "2Gi"
+      }
+   },
+   "c-cluster-id-1234_compile": {
+      "artifacts": {
+         "expire_in": "1 week",
+         "paths": [
+            "diff.txt"
+         ]
+      },
+      "before_script": [
+         "install --directory --mode=0700 ~/.ssh",
+         "echo \"$SSH_KNOWN_HOSTS\" >> ~/.ssh/known_hosts",
+         "echo \"$SSH_CONFIG\" >> ~/.ssh/config"
+      ],
+      "image": {
+         "name": "docker.io/projectsyn/commodore:v1.22.1"
+      },
+      "rules": [
+         {
+            "if": "$CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH"
+         }
+      ],
+      "script": [
+         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}",
+         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_1234}@git.vshn.net:80/cluster-catalogs/c-cluster-id-1234.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}/cluster-catalogs/c-cluster-id-1234.git",
+         "/usr/local/bin/entrypoint.sh commodore catalog compile --tenant-repo-revision-override $CI_COMMIT_SHA c-cluster-id-1234",
+         "(cd catalog/ && git --no-pager diff --staged --output ../diff.txt)"
+      ],
+      "stage": "build",
+      "variables": {
+         "KUBERNETES_CPU_LIMIT": "2",
+         "KUBERNETES_CPU_REQUEST": "1200m",
+         "KUBERNETES_MEMORY_LIMIT": "3Gi"
+      }
+   },
+   "c-cluster-id-1234_deploy": {
+      "before_script": [
+         "install --directory --mode=0700 ~/.ssh",
+         "echo \"$SSH_KNOWN_HOSTS\" >> ~/.ssh/known_hosts",
+         "echo \"$SSH_CONFIG\" >> ~/.ssh/config"
+      ],
+      "image": {
+         "name": "docker.io/projectsyn/commodore:v1.22.1"
+      },
+      "rules": [
+         {
+            "if": "$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH"
+         }
+      ],
+      "script": [
+         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}",
+         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_1234}@git.vshn.net:80/cluster-catalogs/c-cluster-id-1234.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}/cluster-catalogs/c-cluster-id-1234.git",
+         "/usr/local/bin/entrypoint.sh commodore catalog compile --push c-cluster-id-1234"
+      ],
+      "stage": "deploy",
+      "variables": {
+         "KUBERNETES_CPU_LIMIT": "2",
+         "KUBERNETES_CPU_REQUEST": "1200m",
+         "KUBERNETES_MEMORY_LIMIT": "3Gi"
+      }
+   },
+   "c-cluster-id-5678_compile": {
+      "artifacts": {
+         "expire_in": "1 week",
+         "paths": [
+            "diff.txt"
+         ]
+      },
+      "before_script": [
+         "install --directory --mode=0700 ~/.ssh",
+         "echo \"$SSH_KNOWN_HOSTS\" >> ~/.ssh/known_hosts",
+         "echo \"$SSH_CONFIG\" >> ~/.ssh/config"
+      ],
+      "image": {
+         "name": "docker.io/projectsyn/commodore:v1.22.1"
+      },
+      "rules": [
+         {
+            "if": "$CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH"
+         }
+      ],
+      "script": [
+         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}",
+         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_5678}@git.vshn.net:80/cluster-catalogs/c-cluster-id-5678.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}/cluster-catalogs/c-cluster-id-5678.git",
+         "/usr/local/bin/entrypoint.sh commodore catalog compile --tenant-repo-revision-override $CI_COMMIT_SHA c-cluster-id-5678",
+         "(cd catalog/ && git --no-pager diff --staged --output ../diff.txt)"
+      ],
+      "stage": "build",
+      "variables": {
+         "KUBERNETES_CPU_LIMIT": "2",
+         "KUBERNETES_CPU_REQUEST": "2",
+         "KUBERNETES_MEMORY_LIMIT": "2Gi"
+      }
+   },
+   "c-cluster-id-5678_deploy": {
+      "before_script": [
+         "install --directory --mode=0700 ~/.ssh",
+         "echo \"$SSH_KNOWN_HOSTS\" >> ~/.ssh/known_hosts",
+         "echo \"$SSH_CONFIG\" >> ~/.ssh/config"
+      ],
+      "image": {
+         "name": "docker.io/projectsyn/commodore:v1.22.1"
+      },
+      "rules": [
+         {
+            "if": "$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH"
+         }
+      ],
+      "script": [
+         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}",
+         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_5678}@git.vshn.net:80/cluster-catalogs/c-cluster-id-5678.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}/cluster-catalogs/c-cluster-id-5678.git",
+         "/usr/local/bin/entrypoint.sh commodore catalog compile --push c-cluster-id-5678"
+      ],
+      "stage": "deploy",
+      "variables": {
+         "KUBERNETES_CPU_LIMIT": "2",
+         "KUBERNETES_CPU_REQUEST": "2",
+         "KUBERNETES_MEMORY_LIMIT": "2Gi"
+      }
+   }
+}

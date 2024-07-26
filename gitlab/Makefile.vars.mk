@@ -10,3 +10,6 @@ DOCKER_ARGS ?= run --rm -u "$$(id -u):$$(id -g)" --userns=$(DOCKER_USERNS) -w /w
 JSONNET_IMAGE      ?= docker.io/bitnami/jsonnet:latest
 JSONNET_ENTRYPOINT ?= bash
 JSONNET_DOCKER     ?= $(DOCKER_CMD) $(DOCKER_ARGS) -v "$${PWD}:/work" --entrypoint=$(JSONNET_ENTRYPOINT) $(JSONNET_IMAGE)
+
+test_instances=$(shell find tests/ -maxdepth 1 -name '*.env')
+instance=default
