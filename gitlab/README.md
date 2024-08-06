@@ -30,7 +30,7 @@ The pipeline can be used in a Project Syn tenant repository as follows:
 
 > [!TIP]
 > Lieutenant supports managing the CI pipeline configuration for "managed" tenant and cluster catalog repositories.
-> See the [Lieutenant documentation](link todo) for details.
+> See the [Lieutenant documentation](https://syn.tools/lieutenant-operator/how-tos/compile-pipeline-setup.html) for details.
 
 ### Commodore API Token
 
