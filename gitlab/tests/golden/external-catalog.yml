@@ -12,7 +12,7 @@
          "echo \"$SSH_CONFIG\" >> ~/.ssh/config"
       ],
       "image": {
-         "name": "docker.io/projectsyn/commodore:v1.22.1"
+         "name": "docker.io/projectsyn/commodore:v1.23.0"
       },
       "rules": [
          {
@@ -38,7 +38,7 @@
          "echo \"$SSH_CONFIG\" >> ~/.ssh/config"
       ],
       "image": {
-         "name": "docker.io/projectsyn/commodore:v1.22.1"
+         "name": "docker.io/projectsyn/commodore:v1.23.0"
       },
       "rules": [
          {
@@ -69,7 +69,7 @@
          "echo \"$SSH_CONFIG\" >> ~/.ssh/config"
       ],
       "image": {
-         "name": "docker.io/projectsyn/commodore:v1.22.1"
+         "name": "docker.io/projectsyn/commodore:v1.23.0"
       },
       "rules": [
          {
@@ -96,7 +96,7 @@
          "echo \"$SSH_CONFIG\" >> ~/.ssh/config"
       ],
       "image": {
-         "name": "docker.io/projectsyn/commodore:v1.22.1"
+         "name": "docker.io/projectsyn/commodore:v1.23.0"
       },
       "rules": [
          {
@@ -128,7 +128,7 @@
          "echo \"$SSH_CONFIG\" >> ~/.ssh/config"
       ],
       "image": {
-         "name": "docker.io/projectsyn/commodore:v1.22.1"
+         "name": "docker.io/projectsyn/commodore:v1.23.0"
       },
       "rules": [
          {
@@ -154,7 +154,7 @@
          "echo \"$SSH_CONFIG\" >> ~/.ssh/config"
       ],
       "image": {
-         "name": "docker.io/projectsyn/commodore:v1.22.1"
+         "name": "docker.io/projectsyn/commodore:v1.23.0"
       },
       "rules": [
          {
