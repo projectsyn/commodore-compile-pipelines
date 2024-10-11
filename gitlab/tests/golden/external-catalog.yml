@@ -28,7 +28,7 @@
       "variables": {
          "KUBERNETES_CPU_LIMIT": "2",
          "KUBERNETES_CPU_REQUEST": "800m",
-         "KUBERNETES_MEMORY_LIMIT": "2Gi"
+         "KUBERNETES_MEMORY_LIMIT": "3Gi"
       }
    },
    "c-cluster-id-1111_deploy": {
@@ -53,7 +53,7 @@
       "variables": {
          "KUBERNETES_CPU_LIMIT": "2",
          "KUBERNETES_CPU_REQUEST": "800m",
-         "KUBERNETES_MEMORY_LIMIT": "2Gi"
+         "KUBERNETES_MEMORY_LIMIT": "3Gi"
       }
    },
    "c-cluster-id-1234_compile": {
@@ -86,7 +86,7 @@
       "variables": {
          "KUBERNETES_CPU_LIMIT": "2",
          "KUBERNETES_CPU_REQUEST": "800m",
-         "KUBERNETES_MEMORY_LIMIT": "2Gi"
+         "KUBERNETES_MEMORY_LIMIT": "3Gi"
       }
    },
    "c-cluster-id-1234_deploy": {
@@ -112,7 +112,7 @@
       "variables": {
          "KUBERNETES_CPU_LIMIT": "2",
          "KUBERNETES_CPU_REQUEST": "800m",
-         "KUBERNETES_MEMORY_LIMIT": "2Gi"
+         "KUBERNETES_MEMORY_LIMIT": "3Gi"
       }
    },
    "c-cluster-id-5678_compile": {
@@ -144,7 +144,7 @@
       "variables": {
          "KUBERNETES_CPU_LIMIT": "2",
          "KUBERNETES_CPU_REQUEST": "800m",
-         "KUBERNETES_MEMORY_LIMIT": "2Gi"
+         "KUBERNETES_MEMORY_LIMIT": "3Gi"
       }
    },
    "c-cluster-id-5678_deploy": {
@@ -169,7 +169,7 @@
       "variables": {
          "KUBERNETES_CPU_LIMIT": "2",
          "KUBERNETES_CPU_REQUEST": "800m",
-         "KUBERNETES_MEMORY_LIMIT": "2Gi"
+         "KUBERNETES_MEMORY_LIMIT": "3Gi"
       }
    }
 }

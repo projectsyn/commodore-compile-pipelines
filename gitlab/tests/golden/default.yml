@@ -29,7 +29,7 @@
       "variables": {
          "KUBERNETES_CPU_LIMIT": "2",
          "KUBERNETES_CPU_REQUEST": "800m",
-         "KUBERNETES_MEMORY_LIMIT": "2Gi"
+         "KUBERNETES_MEMORY_LIMIT": "3Gi"
       }
    },
    "c-cluster-id-1234_deploy": {
@@ -55,7 +55,7 @@
       "variables": {
          "KUBERNETES_CPU_LIMIT": "2",
          "KUBERNETES_CPU_REQUEST": "800m",
-         "KUBERNETES_MEMORY_LIMIT": "2Gi"
+         "KUBERNETES_MEMORY_LIMIT": "3Gi"
       }
    }
 }
