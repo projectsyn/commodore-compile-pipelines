@@ -54,7 +54,7 @@ local compile_job(cluster) =
       },
     variables:
       {
-        KUBERNETES_MEMORY_LIMIT: std.get(memory_limits, cluster, '2Gi'),
+        KUBERNETES_MEMORY_LIMIT: std.get(memory_limits, cluster, '3Gi'),
         KUBERNETES_CPU_LIMIT: std.get(cpu_limits, cluster, '2'),
         KUBERNETES_CPU_REQUEST: std.get(cpu_requests, cluster, '800m'),
       },
@@ -88,7 +88,7 @@ local deploy_job(cluster) =
     stage: 'deploy',
     variables:
       {
-        KUBERNETES_MEMORY_LIMIT: std.get(memory_limits, cluster, default='2Gi'),
+        KUBERNETES_MEMORY_LIMIT: std.get(memory_limits, cluster, default='3Gi'),
         KUBERNETES_CPU_LIMIT: std.get(cpu_limits, cluster, default='2'),
         KUBERNETES_CPU_REQUEST: std.get(cpu_requests, cluster, default='800m'),
       },
