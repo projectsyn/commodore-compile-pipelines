@@ -21,19 +21,36 @@ local cpu_requests = to_array('cpu_requests');
 
 local gitInsteadOf(cluster) =
   local cluster_access_token = '${ACCESS_TOKEN_%s}' % std.strReplace(cluster, '-', '_');
+  local cluster_access_user = '${ACCESS_USER_%s:-token}' % std.strReplace(cluster, '-', '_');
   local cluster_repo = cluster_catalog_urls[cluster];
   local ssh_gitlab = 'ssh://git@%s/' % gitlab_ssh_host;
   local catalog_path = if std.startsWith(cluster_repo, ssh_gitlab) then
     // prefix ssh://git@<host> 0 == ssh, 1 == '', 2 == <host>
     std.join('/', std.split(cluster_repo, '/')[3:]);
 
+  local https_catalog = if std.startsWith(cluster_repo, 'https://') then
+    std.substr(cluster_repo, std.length('https://'), std.length(cluster_repo));
+
   local catalogInsteadOf =
     if catalog_path != null then
+      // set an insteadOf which injects the access token for catalog repos
+      // that have an ssh catalog URL and which are hosted on the local
+      // GitLab.
       [
         'git config --global url."https://gitlab-ci-token:%(access_token)s@%(gitlab_fqdn)s/%(catalog_path)s".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}/%(catalog_path)s' % {
           access_token: cluster_access_token,
           catalog_path: catalog_path,
           gitlab_fqdn: gitlab_fqdn,
+        },
+      ]
+    else if https_catalog != null then
+      // set an insteadOf which injects credentials if we have a catalog URL
+      // that's already HTTPS in Lieutenant.
+      [
+        'git config --global url."https://%(catalog_user)s:%(access_token)s@%(https_catalog)s".insteadOf https://%(https_catalog)s' % {
+          catalog_user: cluster_access_user,
+          access_token: cluster_access_token,
+          https_catalog: https_catalog,
         },
       ]
     else
