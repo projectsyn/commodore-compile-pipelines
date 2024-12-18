@@ -46,10 +46,28 @@ local gitInsteadOf(cluster) =
     else if https_catalog != null then
       // set an insteadOf which injects credentials if we have a catalog URL
       // that's already HTTPS in Lieutenant.
+      local replacement = 'https://%(catalog_user)s:%(access_token)s@%(https_catalog)s' % {
+        catalog_user: cluster_access_user,
+        access_token: cluster_access_token,
+        https_catalog: https_catalog,
+      };
       [
-        'git config --global url."https://%(catalog_user)s:%(access_token)s@%(https_catalog)s".insteadOf https://%(https_catalog)s' % {
-          catalog_user: cluster_access_user,
-          access_token: cluster_access_token,
+        // Overide the original https:// URL for fetch and clone. Note that we
+        // use `git config --add` here so we can configure two `insteadOf` for
+        // the same replacement URL.
+        'git config --add --global url."%(replacement)s".insteadOf https://%(https_catalog)s' % {
+          replacement: replacement,
+          https_catalog: https_catalog,
+        },
+        // We need to configure an additional insteadOf for the ssh://git@
+        // variant of a HTTPS catalog URL since Commodore will optimistically
+        // rewrite all HTTPS Git URLs to have their ssh://git@ equivalent as
+        // the push URL to make local component development easier.
+        // Note that we can't use `pushInsteadOf` here, since Git ignores
+        // `pushInsteadOf` configs for remotes that have an explicit
+        // `pushurl`.
+        'git config --add --global url."%(replacement)s".insteadOf ssh://git@%(https_catalog)s' % {
+          replacement: replacement,
           https_catalog: https_catalog,
         },
       ]
