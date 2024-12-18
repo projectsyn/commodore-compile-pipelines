@@ -56,13 +56,29 @@ spec:
           masked: true
 ```
 
-### External cluster catalog
+### External cluster catalog via SSH
 
-If the cluster catalog is not hosted on the same GitLab instance as the tenant repo, you can specify an SSH key which has access to the cluster catalog and the relevant known hosts entry via CI/CD variables on the tenant repo:
+If the cluster catalog is hosted externally and can be cloned via SSH, you can specify an SSH key which has access to the cluster catalog and the relevant known hosts entry via CI/CD variables on the tenant repo:
 
 1. Create a CI/CD variable named `SSH_PRIVATE_KEY` containing the SSH private key.
 1. Create a CI/CD varaible named `SSH_KNOWN_HOSTS` containing the know hosts entry.
 1. (optional) Create a CI/CD variable named `SSH_CONFIG` containing any required SSH configuration.
+
+### External cluster catalog via HTTPS
+
+If the cluster catalog is hosted externally and must be cloned via HTTPS, you can configure HTTPS credentials via CI/CD variables on the tenant repo:
+
+1. Create a CI/CD variable named `ACCESS_USER_CLUSTERNAME` where `CLUSTERNAME` is the Project Syn ID of the cluster. 
+   Set this variable's value to the username used to access the catalog repo.
+1. Create a CI/CD variable named `ACCESS_TOKEN_CLUSTERNAME` where `CLUSTERNAME` is the Project Syn ID of the cluster.
+   Set this variable's value to the password or token used to access the catalog repo.
+
+> [!NOTE]
+> To make this work, the Project Syn cluster must be configured to provide its `catalogURL` with a `https://` prefix.
+
+> [!TIP]
+> The variable `ACCESS_USER_CLUSTERNAME` is optional.
+> If it's not provided, the CI pipeline will fallback to username `token`.
 
 ### Test new pipeline generation image
 
