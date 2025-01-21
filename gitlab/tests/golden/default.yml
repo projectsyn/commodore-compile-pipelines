@@ -12,7 +12,7 @@
          "echo \"$SSH_CONFIG\" >> ~/.ssh/config"
       ],
       "image": {
-         "name": "docker.io/projectsyn/commodore:v1.26.0"
+         "name": "docker.io/projectsyn/commodore:v1.26.1"
       },
       "rules": [
          {
@@ -39,7 +39,7 @@
          "echo \"$SSH_CONFIG\" >> ~/.ssh/config"
       ],
       "image": {
-         "name": "docker.io/projectsyn/commodore:v1.26.0"
+         "name": "docker.io/projectsyn/commodore:v1.26.1"
       },
       "rules": [
          {
