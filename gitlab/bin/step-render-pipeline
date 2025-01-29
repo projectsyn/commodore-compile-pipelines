@@ -4,6 +4,10 @@ set -e -u -x
 cluster_catalog_urls=""
 for c in ${CLUSTERS}; do
   r=$(curl -sH"Authorization: Bearer ${COMMODORE_API_TOKEN}" "${COMMODORE_API_URL}/clusters/${c}" | jq -r .gitRepo.url)
+  if [ "$r" = "null" ]; then
+    echo "Got 'null' for catalog URL fo cluster ${c}, aborting..."
+    exit 1
+  fi
   cluster_catalog_urls="${cluster_catalog_urls}${c}=${r} "
 done
 
