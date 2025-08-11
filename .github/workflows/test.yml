@@ -8,7 +8,7 @@ jobs:
   yamllint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: reviewdog/action-yamllint@v1
         with:
           github_token: ${{ secrets.github_token }}
@@ -17,14 +17,14 @@ jobs:
   jsonnetfmt:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: |
           make -C gitlab jsonnetfmt_check
 
   shellcheck:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: reviewdog/action-shellcheck@v1
         with:
           reporter: github-pr-review
@@ -38,7 +38,7 @@ jobs:
     outputs:
       instances: ${{ steps.instances.outputs.instances }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Find test cases
         id: instances
         run: |
@@ -52,6 +52,6 @@ jobs:
     runs-on: ubuntu-latest
     name: 'Golden test: ${{ matrix.instance }}'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: |
           make -C gitlab golden-diff -e instance=${{ matrix.instance }}
