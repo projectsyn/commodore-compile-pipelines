@@ -13,6 +13,12 @@ local to_array(param) = std.foldl(
 
 local gitlab_fqdn = std.extVar('server_fqdn');
 local gitlab_ssh_host = std.extVar('server_ssh_host');
+local gitlab_ssh_port = std.extVar('server_ssh_port');
+local gitlab_ssh_hostport = if gitlab_ssh_port == '' then
+  gitlab_ssh_host
+else
+  '%s:%s' % [ gitlab_ssh_host, gitlab_ssh_port ];
+local ci_ssh_hostport = '${CI_SERVER_SHELL_SSH_HOST}${CI_SERVER_SHELL_SSH_PORT:+:${CI_SERVER_SHELL_SSH_PORT}}';
 local clusters = std.split(std.extVar('clusters'), ' ');
 local cluster_catalog_urls = to_array('cluster_catalog_urls');
 local memory_limits = to_array('memory_limits');
@@ -23,7 +29,7 @@ local gitInsteadOf(cluster) =
   local cluster_access_token = '${ACCESS_TOKEN_%s}' % std.strReplace(cluster, '-', '_');
   local cluster_access_user = '${ACCESS_USER_%s:-token}' % std.strReplace(cluster, '-', '_');
   local cluster_repo = cluster_catalog_urls[cluster];
-  local ssh_gitlab = 'ssh://git@%s/' % gitlab_ssh_host;
+  local ssh_gitlab = 'ssh://git@%s/' % gitlab_ssh_hostport;
   local catalog_path = if std.startsWith(cluster_repo, ssh_gitlab) then
     // prefix ssh://git@<host> 0 == ssh, 1 == '', 2 == <host>
     std.join('/', std.split(cluster_repo, '/')[3:]);
@@ -37,10 +43,11 @@ local gitInsteadOf(cluster) =
       // that have an ssh catalog URL and which are hosted on the local
       // GitLab.
       [
-        'git config --global url."https://gitlab-ci-token:%(access_token)s@%(gitlab_fqdn)s/%(catalog_path)s".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}/%(catalog_path)s' % {
+        'git config --global url."https://gitlab-ci-token:%(access_token)s@%(gitlab_fqdn)s/%(catalog_path)s".insteadOf ssh://git@%(ssh_hostport)s/%(catalog_path)s' % {
           access_token: cluster_access_token,
           catalog_path: catalog_path,
           gitlab_fqdn: gitlab_fqdn,
+          ssh_hostport: ci_ssh_hostport,
         },
       ]
     else if https_catalog != null then
@@ -75,8 +82,9 @@ local gitInsteadOf(cluster) =
       [];
 
   [
-    'git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@%(gitlab_fqdn)s".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}' % {
+    'git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@%(gitlab_fqdn)s".insteadOf ssh://git@%(ssh_hostport)s' % {
       gitlab_fqdn: gitlab_fqdn,
+      ssh_hostport: ci_ssh_hostport,
     },
   ] + catalogInsteadOf;
 

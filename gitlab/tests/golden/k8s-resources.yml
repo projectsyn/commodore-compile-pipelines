@@ -20,8 +20,8 @@
          }
       ],
       "script": [
-         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}",
-         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_0099}@git.vshn.net:80/cluster-catalogs/c-cluster-id-0099.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}/cluster-catalogs/c-cluster-id-0099.git",
+         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}${CI_SERVER_SHELL_SSH_PORT:+:${CI_SERVER_SHELL_SSH_PORT}}",
+         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_0099}@git.vshn.net:80/cluster-catalogs/c-cluster-id-0099.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}${CI_SERVER_SHELL_SSH_PORT:+:${CI_SERVER_SHELL_SSH_PORT}}/cluster-catalogs/c-cluster-id-0099.git",
          "/usr/local/bin/entrypoint.sh commodore catalog compile --tenant-repo-revision-override $CI_COMMIT_SHA c-cluster-id-0099",
          "(cd catalog/ && git --no-pager diff --staged --output ../diff.txt)"
       ],
@@ -47,8 +47,8 @@
          }
       ],
       "script": [
-         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}",
-         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_0099}@git.vshn.net:80/cluster-catalogs/c-cluster-id-0099.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}/cluster-catalogs/c-cluster-id-0099.git",
+         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}${CI_SERVER_SHELL_SSH_PORT:+:${CI_SERVER_SHELL_SSH_PORT}}",
+         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_0099}@git.vshn.net:80/cluster-catalogs/c-cluster-id-0099.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}${CI_SERVER_SHELL_SSH_PORT:+:${CI_SERVER_SHELL_SSH_PORT}}/cluster-catalogs/c-cluster-id-0099.git",
          "/usr/local/bin/entrypoint.sh commodore catalog compile --push c-cluster-id-0099"
       ],
       "stage": "deploy",
@@ -79,8 +79,8 @@
          }
       ],
       "script": [
-         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}",
-         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_1234}@git.vshn.net:80/cluster-catalogs/c-cluster-id-1234.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}/cluster-catalogs/c-cluster-id-1234.git",
+         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}${CI_SERVER_SHELL_SSH_PORT:+:${CI_SERVER_SHELL_SSH_PORT}}",
+         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_1234}@git.vshn.net:80/cluster-catalogs/c-cluster-id-1234.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}${CI_SERVER_SHELL_SSH_PORT:+:${CI_SERVER_SHELL_SSH_PORT}}/cluster-catalogs/c-cluster-id-1234.git",
          "/usr/local/bin/entrypoint.sh commodore catalog compile --tenant-repo-revision-override $CI_COMMIT_SHA c-cluster-id-1234",
          "(cd catalog/ && git --no-pager diff --staged --output ../diff.txt)"
       ],
@@ -106,8 +106,8 @@
          }
       ],
       "script": [
-         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}",
-         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_1234}@git.vshn.net:80/cluster-catalogs/c-cluster-id-1234.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}/cluster-catalogs/c-cluster-id-1234.git",
+         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}${CI_SERVER_SHELL_SSH_PORT:+:${CI_SERVER_SHELL_SSH_PORT}}",
+         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_1234}@git.vshn.net:80/cluster-catalogs/c-cluster-id-1234.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}${CI_SERVER_SHELL_SSH_PORT:+:${CI_SERVER_SHELL_SSH_PORT}}/cluster-catalogs/c-cluster-id-1234.git",
          "/usr/local/bin/entrypoint.sh commodore catalog compile --push c-cluster-id-1234"
       ],
       "stage": "deploy",
@@ -138,8 +138,8 @@
          }
       ],
       "script": [
-         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}",
-         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_5678}@git.vshn.net:80/cluster-catalogs/c-cluster-id-5678.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}/cluster-catalogs/c-cluster-id-5678.git",
+         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}${CI_SERVER_SHELL_SSH_PORT:+:${CI_SERVER_SHELL_SSH_PORT}}",
+         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_5678}@git.vshn.net:80/cluster-catalogs/c-cluster-id-5678.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}${CI_SERVER_SHELL_SSH_PORT:+:${CI_SERVER_SHELL_SSH_PORT}}/cluster-catalogs/c-cluster-id-5678.git",
          "/usr/local/bin/entrypoint.sh commodore catalog compile --tenant-repo-revision-override $CI_COMMIT_SHA c-cluster-id-5678",
          "(cd catalog/ && git --no-pager diff --staged --output ../diff.txt)"
       ],
@@ -165,8 +165,8 @@
          }
       ],
       "script": [
-         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}",
-         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_5678}@git.vshn.net:80/cluster-catalogs/c-cluster-id-5678.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}/cluster-catalogs/c-cluster-id-5678.git",
+         "git config --global url.\"https://gitlab-ci-token:${CI_JOB_TOKEN}@git.vshn.net:80\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}${CI_SERVER_SHELL_SSH_PORT:+:${CI_SERVER_SHELL_SSH_PORT}}",
+         "git config --global url.\"https://gitlab-ci-token:${ACCESS_TOKEN_c_cluster_id_5678}@git.vshn.net:80/cluster-catalogs/c-cluster-id-5678.git\".insteadOf ssh://git@${CI_SERVER_SHELL_SSH_HOST}${CI_SERVER_SHELL_SSH_PORT:+:${CI_SERVER_SHELL_SSH_PORT}}/cluster-catalogs/c-cluster-id-5678.git",
          "/usr/local/bin/entrypoint.sh commodore catalog compile --push c-cluster-id-5678"
       ],
       "stage": "deploy",
