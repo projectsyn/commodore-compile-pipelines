@@ -19,5 +19,6 @@ jsonnet \
   --ext-str cluster_catalog_urls="${cluster_catalog_urls}" \
   --ext-str server_fqdn="${CI_SERVER_FQDN}" \
   --ext-str server_ssh_host="${CI_SERVER_SHELL_SSH_HOST}" \
+  --ext-str server_ssh_port="${CI_SERVER_SHELL_SSH_PORT:-}" \
   /opt/commodore-compile.jsonnet \
-  > generated-commodore-compile.yml
+  >generated-commodore-compile.yml
