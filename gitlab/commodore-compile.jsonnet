@@ -13,7 +13,6 @@ local to_array(param) = std.foldl(
 
 local gitlab_fqdn = std.extVar('server_fqdn');
 local gitlab_ssh_host = std.extVar('server_ssh_host');
-local gitlab_ssh_port = std.extVar('server_ssh_port');
 // NOTE(sg): We keep the ci_ssh_hostport value in the form that gracefully
 // degrades to `CI_SERVER_SHELL_SSH_HOST` if `CI_SERVER_SHELL_SSH_PORT` is
 // unset even though GitLab currently unconditionally sets the variable
