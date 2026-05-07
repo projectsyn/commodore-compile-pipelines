@@ -28,7 +28,7 @@ local gitInsteadOf(cluster) =
   local cluster_access_token = '${ACCESS_TOKEN_%s}' % std.strReplace(cluster, '-', '_');
   local cluster_access_user = '${ACCESS_USER_%s:-token}' % std.strReplace(cluster, '-', '_');
   local cluster_repo = cluster_catalog_urls[cluster];
-  local ssh_gitlab = 'ssh://git@%s/' % gitlab_ssh_host;
+  local ssh_gitlab = 'ssh://git@%s' % gitlab_ssh_host;
   local catalog_path = if std.startsWith(cluster_repo, ssh_gitlab) then
     // prefix ssh://git@<host> 0 == ssh, 1 == '', 2 == <host>
     std.join('/', std.split(cluster_repo, '/')[3:]);
