@@ -18,7 +18,7 @@ local gitlab_ssh_host = std.extVar('server_ssh_host');
 // unset even though GitLab currently unconditionally sets the variable
 // `CI_SERVER_SHELL_SSH_PORT`.
 local ci_ssh_hostport = '${CI_SERVER_SHELL_SSH_HOST}${CI_SERVER_SHELL_SSH_PORT:+:${CI_SERVER_SHELL_SSH_PORT}}';
-local clusters = std.split(std.extVar('clusters'), ' ');
+local clusters = std.filter(function(it) it != '', std.split(std.extVar('clusters'), ' '));
 local cluster_catalog_urls = to_array('cluster_catalog_urls');
 local memory_limits = to_array('memory_limits');
 local cpu_limits = to_array('cpu_limits');
@@ -181,4 +181,7 @@ local deploy =
     for x in clusters
   };
 
-compile + deploy
+if std.length(clusters) == 0 then
+  error 'Commodore CI pipeline generator expects at least one cluster, got zero'
+else
+  compile + deploy
