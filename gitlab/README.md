@@ -107,19 +107,25 @@ To fix the issue:
 * Add the MR creator to the cluster catalog repositories as a "Developer" for read-only, or "Maintainer" for read-write access.
 * Add the MR creator to other repositories as a "Developer".
 
-### Configure cpu requests and limits
+### Configure CI job requests and limits
 
 The following options can be configured as CI/CD variables when the GitLab instance uses a K8s CI runner:
 
 * `CPU_REQUESTS`, which defaults to `800m`
 * `CPU_LIMITS`, which defaults to `2`
-* `MEMORY_LIMITS`, which defaults to `2Gi`
+* `MEMORY_REQUESTS`, which defaults to `3Gi`
+* `MEMORY_LIMITS`, which defaults to `3Gi`
 
 The job generator expects that each of these variables has space-separated entries of the form `c-cluster-id-1234=value` if it's present.
+
+> [!NOTE]
+> The Job generator doesn't validate custom requests and limits.
+> The CI job for a cluster will fail run if you set higher requests than limits for the cluster.
+> CI jobs also will fail to run if you set requests or limits that are higher than the GitLab K8s CI runner's maximum allowed request or limit overrides.
 
 Example:
 
 ```yaml
 variables:
-  MEMORY_LIMITS: "c-my-cluster=3Gi c-my-other-cluster=3Gi"
+  MEMORY_LIMITS: "c-my-cluster=4Gi c-my-other-cluster=4Gi"
 ```

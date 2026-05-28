@@ -13,6 +13,7 @@ jsonnet --ext-str clusters="$CLUSTERS" \
   --ext-str server_fqdn="git.vshn.net:80" \
   --ext-str server_ssh_host="git.vshn.net" \
   --ext-str memory_limits="${MEMORY_LIMITS:-}" \
+  --ext-str memory_requests="${MEMORY_REQUESTS:-}" \
   --ext-str cpu_limits="${CPU_LIMITS:-}" \
   --ext-str cpu_requests="${CPU_REQUESTS:-}" \
   commodore-compile.jsonnet
