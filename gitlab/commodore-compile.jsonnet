@@ -105,26 +105,57 @@ local gitInsteadOf(cluster) =
 
 local cpu_limit(cluster) = std.get(cpu_limits, cluster, '2');
 
+// K8s quantity parser.
+// Supported suffices as listed in `kubectl explain pod.spec.containers.resources.requests`.
+local parseK8sQuantity(q) =
+  local decimalSIMap = {
+    m: 1 / 1000,
+    k: 1000,
+    M: 1000 * 1000,
+    G: 1000 * 1000 * 1000,
+    T: 1000 * 1000 * 1000 * 1000,
+    P: 1000 * 1000 * 1000 * 1000 * 1000,
+    E: 1000 * 1000 * 1000 * 1000 * 1000 * 1000,
+  };
+  local binarySIMap = {
+    Ki: 1024,
+    Mi: 1024 * 1024,
+    Gi: 1024 * 1024 * 1024,
+    Ti: 1024 * 1024 * 1024 * 1024,
+    Pi: 1024 * 1024 * 1024 * 1024 * 1024,
+    Ei: 1024 * 1024 * 1024 * 1024 * 1024 * 1024,
+  };
+  local qlen = std.length(q);
+  local decSuffix = if qlen > 1 then q[-1:] else '';
+  local binSuffix = if qlen > 2 then q[-2:] else '';
+  local val =
+    if std.member(std.objectFields(decimalSIMap), decSuffix) then
+      {
+        scale: decimalSIMap[decSuffix],
+        num: q[:-1],
+      }
+    else if std.member(std.objectFields(binarySIMap), binSuffix) then
+      {
+        scale: binarySIMap[binSuffix],
+        num: q[:-2],
+      }
+    else
+      {
+        scale: 1,
+        num: q,
+      };
+
+  local num = std.parseYaml(val.num);
+  if !std.isNumber(num) then
+    error 'Failed to parse K8s quantity %s: parser got %s' % [ q, val ]
+  else
+    num * val.scale;
+
 // Compute Commodore process count based on CPU limit for the cluster by
 // rounding down to the next nearest integer, clamped at 1.
 local proc_count(cluster) =
-  local parseK8sCPU(cl) =
-    local val = if std.endsWith(cl, 'm') then
-      {
-        isMilli: true,
-        num: cl[:-1],
-      }
-    else {
-      isMilli: false,
-      num: cl,
-    };
-    local clnum = std.parseYaml(val.num);
-    if std.isString(clnum) then
-      error 'Failed to parse K8s CPU limit %s: the parser currently only supports unsuffixed values and milli-CPU values' % cl
-    else
-      if val.isMilli then clnum / 1000 else clnum;
   if std.extVar('commodore_proc_count_from_cpu_limit') != '' then (
-    local cl = parseK8sCPU(cpu_limit(cluster));
+    local cl = parseK8sQuantity(cpu_limit(cluster));
     if cl >= 1 then std.floor(cl) else 1
   ) else
     // Commodore auto-selects the number of worker processes when the value of
