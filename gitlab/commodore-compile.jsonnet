@@ -103,6 +103,35 @@ local gitInsteadOf(cluster) =
     'git config --add --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@%(gitlab_fqdn)s".insteadOf ssh://git@%(ssh_hostport)s' % gitlab_params,
   ] + catalogInsteadOf;
 
+local cpu_limit(cluster) = std.get(cpu_limits, cluster, '2');
+
+// Compute Commodore process count based on CPU limit for the cluster by
+// rounding down to the next nearest integer, clamped at 1.
+local proc_count(cluster) =
+  local parseK8sCPU(cl) =
+    local val = if std.endsWith(cl, 'm') then
+      {
+        isMilli: true,
+        num: cl[:-1],
+      }
+    else {
+      isMilli: false,
+      num: cl,
+    };
+    local clnum = std.parseYaml(val.num);
+    if std.isString(clnum) then
+      error 'Failed to parse K8s CPU limit %s: the parser currently only supports unsuffixed values and milli-CPU values' % cl
+    else
+      if val.isMilli then clnum / 1000 else clnum;
+  if std.extVar('commodore_proc_count_from_cpu_limit') != '' then (
+    local cl = parseK8sCPU(cpu_limit(cluster));
+    if cl >= 1 then std.floor(cl) else 1
+  ) else
+    // Commodore auto-selects the number of worker processes when the value of
+    // the flag/envvar is 0. This matches the behavior of Commodore v1.33.1
+    // and older.
+    0;
+
 local compile_job(cluster) =
   {
     stage: 'build',
@@ -114,8 +143,9 @@ local compile_job(cluster) =
       {
         KUBERNETES_MEMORY_LIMIT: std.get(memory_limits, cluster, '3Gi'),
         KUBERNETES_MEMORY_REQUEST: std.get(memory_requests, cluster, '3Gi'),
-        KUBERNETES_CPU_LIMIT: std.get(cpu_limits, cluster, '2'),
+        KUBERNETES_CPU_LIMIT: cpu_limit(cluster),
         KUBERNETES_CPU_REQUEST: std.get(cpu_requests, cluster, '800m'),
+        COMMODORE_CATALOG_COMPILE_PROCESSES: proc_count(cluster),
       },
     before_script:
       [
@@ -149,8 +179,9 @@ local deploy_job(cluster) =
       {
         KUBERNETES_MEMORY_LIMIT: std.get(memory_limits, cluster, '3Gi'),
         KUBERNETES_MEMORY_REQUEST: std.get(memory_requests, cluster, '3Gi'),
-        KUBERNETES_CPU_LIMIT: std.get(cpu_limits, cluster, '2'),
+        KUBERNETES_CPU_LIMIT: cpu_limit(cluster),
         KUBERNETES_CPU_REQUEST: std.get(cpu_requests, cluster, '800m'),
+        COMMODORE_CATALOG_COMPILE_PROCESSES: proc_count(cluster),
       },
     image:
       {

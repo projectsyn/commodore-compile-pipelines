@@ -129,3 +129,17 @@ Example:
 variables:
   MEMORY_LIMITS: "c-my-cluster=4Gi c-my-other-cluster=4Gi"
 ```
+
+### Configure number of Commodore worker processes based on CI job CPU limits
+
+Commodore v1.34.0 and newer allow users to configure the number of worker processes that are used to compile the catalog.
+
+> [!NOTE]
+> This configuration option doesn't have an impact on the number of threads used by reclass-rs to render the Reclass inventory.
+
+Users can opt-in to setting the number of Commodore worker processes based on each cluster's CI job CPU limits.
+To opt-in, users need to set environment variable `COMMODORE_PROCESSES_FROM_CPU_LIMIT` to a non-empty value in their GitLab CI configuration.
+When opting in, the Job generator sets the number of worker processes for each cluster's CI job to the maximum of the cluster's CPU limit rounded down to the next integer and 1.
+We use 1 as the lower bound, since flag value 0 configures Commodore to auto-detect the number of worker processes.
+
+For users that don't opt-in, the Job generator configures Commodore to auto-detect the number of worker processes, preserving the Commodore v1.33.1 behavior.
