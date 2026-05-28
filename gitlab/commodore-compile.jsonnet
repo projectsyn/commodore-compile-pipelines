@@ -21,6 +21,7 @@ local ci_ssh_hostport = '${CI_SERVER_SHELL_SSH_HOST}${CI_SERVER_SHELL_SSH_PORT:+
 local clusters = std.filter(function(it) it != '', std.split(std.extVar('clusters'), ' '));
 local cluster_catalog_urls = to_array('cluster_catalog_urls');
 local memory_limits = to_array('memory_limits');
+local memory_requests = to_array('memory_requests');
 local cpu_limits = to_array('cpu_limits');
 local cpu_requests = to_array('cpu_requests');
 
@@ -112,6 +113,7 @@ local compile_job(cluster) =
     variables:
       {
         KUBERNETES_MEMORY_LIMIT: std.get(memory_limits, cluster, '3Gi'),
+        KUBERNETES_MEMORY_REQUEST: std.get(memory_requests, cluster, '3Gi'),
         KUBERNETES_CPU_LIMIT: std.get(cpu_limits, cluster, '2'),
         KUBERNETES_CPU_REQUEST: std.get(cpu_requests, cluster, '800m'),
       },
@@ -145,9 +147,10 @@ local deploy_job(cluster) =
     stage: 'deploy',
     variables:
       {
-        KUBERNETES_MEMORY_LIMIT: std.get(memory_limits, cluster, default='3Gi'),
-        KUBERNETES_CPU_LIMIT: std.get(cpu_limits, cluster, default='2'),
-        KUBERNETES_CPU_REQUEST: std.get(cpu_requests, cluster, default='800m'),
+        KUBERNETES_MEMORY_LIMIT: std.get(memory_limits, cluster, '3Gi'),
+        KUBERNETES_MEMORY_REQUEST: std.get(memory_requests, cluster, '3Gi'),
+        KUBERNETES_CPU_LIMIT: std.get(cpu_limits, cluster, '2'),
+        KUBERNETES_CPU_REQUEST: std.get(cpu_requests, cluster, '800m'),
       },
     image:
       {
