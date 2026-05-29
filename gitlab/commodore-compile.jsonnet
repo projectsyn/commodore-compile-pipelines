@@ -103,7 +103,7 @@ local gitInsteadOf(cluster) =
     'git config --add --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@%(gitlab_fqdn)s".insteadOf ssh://git@%(ssh_hostport)s' % gitlab_params,
   ] + catalogInsteadOf;
 
-local cpu_limit(cluster) = std.get(cpu_limits, cluster, '2');
+local read_cpu_limit(cluster) = std.get(cpu_limits, cluster, '2');
 
 // K8s quantity parser.
 // Supported suffices as listed in `kubectl explain pod.spec.containers.resources.requests`.
@@ -155,13 +155,50 @@ local parseK8sQuantity(q) =
 // rounding down to the next nearest integer, clamped at 1.
 local proc_count(cluster) =
   if std.extVar('commodore_proc_count_from_cpu_limit') != '' then (
-    local cl = parseK8sQuantity(cpu_limit(cluster));
+    local cl = parseK8sQuantity(read_cpu_limit(cluster));
     if cl >= 1 then std.floor(cl) else 1
   ) else
     // Commodore auto-selects the number of worker processes when the value of
     // the flag/envvar is 0. This matches the behavior of Commodore v1.33.1
     // and older.
     0;
+
+local job_vars(cluster) =
+  local memory_limit = std.get(memory_limits, cluster, '3Gi');
+  local memory_request = std.get(memory_requests, cluster, '3Gi');
+  local cpu_limit = read_cpu_limit(cluster);
+  local cpu_request = std.get(cpu_requests, cluster, '800m');
+  local memerr =
+    if parseK8sQuantity(memory_request) <= parseK8sQuantity(memory_limit) then
+      ''
+    else
+      'memory limit (%(ml)s) smaller than memory request (%(mr)s)' % {
+        ml: memory_limit,
+        mr: memory_request,
+      };
+  local cpuerr =
+    if parseK8sQuantity(cpu_request) <= parseK8sQuantity(cpu_limit) then
+      ''
+    else
+      'CPU limit (%(cpu_limit)s) smaller than CPU request (%(cpu_request)s)' % {
+        cpu_limit: cpu_limit,
+        cpu_request: cpu_request,
+      };
+  assert
+    memerr == '' && cpuerr == ''
+    : 'Invalid CI job config for cluster %(cluster)s: %(memerr)s%(both)s%(cpuerr)s' % {
+      cluster: cluster,
+      memerr: memerr,
+      cpuerr: cpuerr,
+      both: if memerr == '' || cpuerr == '' then '' else ' and ',
+    };
+  {
+    KUBERNETES_MEMORY_LIMIT: memory_limit,
+    KUBERNETES_MEMORY_REQUEST: memory_request,
+    KUBERNETES_CPU_LIMIT: cpu_limit,
+    KUBERNETES_CPU_REQUEST: cpu_request,
+    COMMODORE_CATALOG_COMPILE_PROCESSES: proc_count(cluster),
+  };
 
 local compile_job(cluster) =
   {
@@ -170,14 +207,7 @@ local compile_job(cluster) =
       {
         name: commodore_image,
       },
-    variables:
-      {
-        KUBERNETES_MEMORY_LIMIT: std.get(memory_limits, cluster, '3Gi'),
-        KUBERNETES_MEMORY_REQUEST: std.get(memory_requests, cluster, '3Gi'),
-        KUBERNETES_CPU_LIMIT: cpu_limit(cluster),
-        KUBERNETES_CPU_REQUEST: std.get(cpu_requests, cluster, '800m'),
-        COMMODORE_CATALOG_COMPILE_PROCESSES: proc_count(cluster),
-      },
+    variables: job_vars(cluster),
     before_script:
       [
         'install --directory --mode=0700 ~/.ssh',
@@ -206,14 +236,7 @@ local compile_job(cluster) =
 local deploy_job(cluster) =
   {
     stage: 'deploy',
-    variables:
-      {
-        KUBERNETES_MEMORY_LIMIT: std.get(memory_limits, cluster, '3Gi'),
-        KUBERNETES_MEMORY_REQUEST: std.get(memory_requests, cluster, '3Gi'),
-        KUBERNETES_CPU_LIMIT: cpu_limit(cluster),
-        KUBERNETES_CPU_REQUEST: std.get(cpu_requests, cluster, '800m'),
-        COMMODORE_CATALOG_COMPILE_PROCESSES: proc_count(cluster),
-      },
+    variables: job_vars(cluster),
     image:
       {
         name: commodore_image,

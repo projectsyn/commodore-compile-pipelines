@@ -118,10 +118,9 @@ The following options can be configured as CI/CD variables when the GitLab insta
 
 The job generator expects that each of these variables has space-separated entries of the form `c-cluster-id-1234=value` if it's present.
 
-> [!NOTE]
-> The Job generator doesn't validate custom requests and limits.
-> The CI job for a cluster will fail run if you set higher requests than limits for the cluster.
-> CI jobs also will fail to run if you set requests or limits that are higher than the GitLab K8s CI runner's maximum allowed request or limit overrides.
+> [!TIP]
+> The Job generator raises an error if a CI job's K8s resource limits are invalid (i.e. limit < request).
+> However, CI jobs may fail to run if you set requests or limits that are higher than the GitLab K8s CI runner's maximum allowed request or limit overrides.
 
 Example:
 
