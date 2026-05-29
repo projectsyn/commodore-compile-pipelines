@@ -29,6 +29,7 @@
       ],
       "stage": "build",
       "variables": {
+         "COMMODORE_CATALOG_COMPILE_PROCESSES": 0,
          "KUBERNETES_CPU_LIMIT": "2",
          "KUBERNETES_CPU_REQUEST": "800m",
          "KUBERNETES_MEMORY_LIMIT": "3Gi",
@@ -58,6 +59,7 @@
       ],
       "stage": "deploy",
       "variables": {
+         "COMMODORE_CATALOG_COMPILE_PROCESSES": 0,
          "KUBERNETES_CPU_LIMIT": "2",
          "KUBERNETES_CPU_REQUEST": "800m",
          "KUBERNETES_MEMORY_LIMIT": "3Gi",
@@ -94,6 +96,7 @@
       ],
       "stage": "build",
       "variables": {
+         "COMMODORE_CATALOG_COMPILE_PROCESSES": 0,
          "KUBERNETES_CPU_LIMIT": "2",
          "KUBERNETES_CPU_REQUEST": "800m",
          "KUBERNETES_MEMORY_LIMIT": "3Gi",
@@ -123,6 +126,7 @@
       ],
       "stage": "deploy",
       "variables": {
+         "COMMODORE_CATALOG_COMPILE_PROCESSES": 0,
          "KUBERNETES_CPU_LIMIT": "2",
          "KUBERNETES_CPU_REQUEST": "800m",
          "KUBERNETES_MEMORY_LIMIT": "3Gi",
@@ -157,6 +161,7 @@
       ],
       "stage": "build",
       "variables": {
+         "COMMODORE_CATALOG_COMPILE_PROCESSES": 0,
          "KUBERNETES_CPU_LIMIT": "2",
          "KUBERNETES_CPU_REQUEST": "800m",
          "KUBERNETES_MEMORY_LIMIT": "3Gi",
@@ -184,6 +189,7 @@
       ],
       "stage": "deploy",
       "variables": {
+         "COMMODORE_CATALOG_COMPILE_PROCESSES": 0,
          "KUBERNETES_CPU_LIMIT": "2",
          "KUBERNETES_CPU_REQUEST": "800m",
          "KUBERNETES_MEMORY_LIMIT": "3Gi",

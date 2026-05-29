@@ -20,5 +20,6 @@ jsonnet \
   --ext-str cluster_catalog_urls="${cluster_catalog_urls}" \
   --ext-str server_fqdn="${CI_SERVER_FQDN}" \
   --ext-str server_ssh_host="${CI_SERVER_SHELL_SSH_HOST}" \
+  --ext-str commodore_proc_count_from_cpu_limit="${COMMODORE_PROCESSES_FROM_CPU_LIMIT:-}" \
   /opt/commodore-compile.jsonnet \
   >generated-commodore-compile.yml

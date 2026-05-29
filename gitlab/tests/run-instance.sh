@@ -16,4 +16,5 @@ jsonnet --ext-str clusters="$CLUSTERS" \
   --ext-str memory_requests="${MEMORY_REQUESTS:-}" \
   --ext-str cpu_limits="${CPU_LIMITS:-}" \
   --ext-str cpu_requests="${CPU_REQUESTS:-}" \
+  --ext-str commodore_proc_count_from_cpu_limit="${COMMODORE_PROCESSES_FROM_CPU_LIMIT:-}" \
   commodore-compile.jsonnet
