@@ -36,7 +36,7 @@ yamllint:
 commodore-lint:
   stage: lint
   image:
-    name: docker.io/projectsyn/commodore:latest
+    name: ghcr.io/projectsyn/commodore:latest
     entrypoint: ["/usr/local/bin/entrypoint.sh"]
   script:
     - commodore inventory lint .
