@@ -25,6 +25,13 @@ local memory_requests = to_array('memory_requests');
 local cpu_limits = to_array('cpu_limits');
 local cpu_requests = to_array('cpu_requests');
 
+local before_script = [
+  'install --directory --mode=0700 ~/.ssh',
+  'echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts',
+  'echo "$SSH_CONFIG" >> ~/.ssh/config',
+  'git config --global http.version HTTP/1.1',
+];
+
 local gitInsteadOf(cluster) =
   local cluster_access_token = '${ACCESS_TOKEN_%s}' % std.strReplace(cluster, '-', '_');
   local cluster_access_user = '${ACCESS_USER_%s:-token}' % std.strReplace(cluster, '-', '_');
@@ -208,12 +215,7 @@ local compile_job(cluster) =
         name: commodore_image,
       },
     variables: job_vars(cluster),
-    before_script:
-      [
-        'install --directory --mode=0700 ~/.ssh',
-        'echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts',
-        'echo "$SSH_CONFIG" >> ~/.ssh/config',
-      ],
+    before_script: before_script,
     script:
       gitInsteadOf(cluster) + [
         '/usr/local/bin/entrypoint.sh commodore catalog compile --tenant-repo-revision-override $CI_COMMIT_SHA ' + cluster,
@@ -241,12 +243,7 @@ local deploy_job(cluster) =
       {
         name: commodore_image,
       },
-    before_script:
-      [
-        'install --directory --mode=0700 ~/.ssh',
-        'echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts',
-        'echo "$SSH_CONFIG" >> ~/.ssh/config',
-      ],
+    before_script: before_script,
     script:
       gitInsteadOf(cluster) + [
         '/usr/local/bin/entrypoint.sh commodore catalog compile --push ' + cluster,
