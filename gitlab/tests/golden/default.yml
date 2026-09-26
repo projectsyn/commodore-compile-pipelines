@@ -13,7 +13,7 @@
          "git config --global http.version HTTP/1.1"
       ],
       "image": {
-         "name": "docker.io/projectsyn/commodore:v1.34.0"
+         "name": "ghcr.io/projectsyn/commodore:v1.34.0"
       },
       "rules": [
          {
@@ -45,7 +45,7 @@
          "git config --global http.version HTTP/1.1"
       ],
       "image": {
-         "name": "docker.io/projectsyn/commodore:v1.34.0"
+         "name": "ghcr.io/projectsyn/commodore:v1.34.0"
       },
       "rules": [
          {
