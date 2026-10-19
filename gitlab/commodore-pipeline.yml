@@ -41,6 +41,17 @@ commodore-lint:
   script:
     - commodore inventory lint .
 
+# NOTE(sg): This job exits with a failure code if the pipeline is
+# administratively disabled by setting environment variable
+# COMMODORE_PIPELINE_DISABLE to a non-empty string.
+# This is intended for use cases such as change freezes for certain tenants
+# where we want to prevent any automated commodore compile runs.
+check-pipeline:
+  stage: lint
+  image: ${PIPELINE_GENERATION_IMAGE}
+  script:
+    - step-check-disable-pipeline
+
 create-pipelines:
   stage: build
   image:

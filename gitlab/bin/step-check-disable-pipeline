@@ -1,0 +1,20 @@
+#!/bin/sh
+set -e -u
+
+disable=${COMMODORE_PIPELINE_DISABLE:-""}
+
+if [ "${disable}" != "" ]; then
+  /bin/echo -e "\033[01;31m"
+  /bin/echo "======================================="
+  /bin/echo "Commodore compile pipeline disabled."
+  /bin/echo "Reason:"
+  /bin/echo ""
+  /bin/echo "  ${disable}"
+  /bin/echo ""
+  /bin/echo "======================================="
+  /bin/echo -e "\033[00m"
+  exit 2
+fi
+
+echo "Commodore compile pipeline not disabled."
+exit 0
